@@ -1,42 +1,76 @@
-[gd_scene load_steps=5 format=3 uid="uid://bqhs7uvu6c7lc"]
+[gd_scene load_steps=7 format=3 uid="uid://bqhs7uvu6c7lc"]
 
-[ext_resource type="Script" path="res://Player.gd" id="1_8i1ox"]
+[ext_resource type="PackedScene" uid="uid://ccwcgpcm1vmc0" path="res://prefabs/map_godot.tscn" id="1_i0aqw"]
+[ext_resource type="PackedScene" uid="uid://c057d7xgvkm3f" path="res://player/player.tscn" id="2_28q3n"]
+[ext_resource type="Script" path="res://scripts/area_trigger.gd" id="3_e843t"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_j5o08"]
-size = Vector3(60, 2, 60)
+[sub_resource type="BoxShape3D" id="BoxShape3D_ds4yl"]
+size = Vector3(3.17731, 5.8595, 1.10498)
 
-[sub_resource type="BoxMesh" id="BoxMesh_i2eft"]
-size = Vector3(60, 2, 60)
+[sub_resource type="Animation" id="Animation_c2i5o"]
+resource_name = "my_animation"
+length = 1.7
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SphereAnimation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0.3, 1, 2.70624, 0.702093, -1.69528, 0.5, 1, 2.70624, 6.70209, -1.69528, 0.7, 1, 8.5083, 6.70209, -1.69528, 0.9, 1, 8.5083, 1.43836, -1.69528, 1.1, 1, 8.5083, 6.70209, -1.69528, 1.3, 1, 2.70624, 6.70209, -1.69528, 1.5, 1, 2.70624, 0.702093, -1.69528)
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SphereAnimation:transparency")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 1.5, 1.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [1.0, 0.0, 0.0, 1.0]
+}
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_edrlr"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_q1g1n"]
+_data = {
+"my_animation": SubResource("Animation_c2i5o")
+}
 
-[node name="MainScene" type="Node3D"]
+[node name="Node" type="Node"]
 
-[node name="Node" type="Node" parent="."]
+[node name="map_godot2" parent="." instance=ExtResource("1_i0aqw")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
-[node name="Ground" type="StaticBody3D" parent="Node"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Node/Ground"]
-shape = SubResource("BoxShape3D_j5o08")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Node/Ground"]
-mesh = SubResource("BoxMesh_i2eft")
-
-[node name="Player" type="CharacterBody3D" parent="Node"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.75714, 0)
-script = ExtResource("1_8i1ox")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Node/Player"]
-transform = Transform3D(0.971089, 0, 0, 0, 0.971089, 0, 0, 0, 0.971089, 0, 1, 0)
-shape = SubResource("BoxShape3D_edrlr")
-
-[node name="Pivot" type="Node3D" parent="Node/Player"]
-
-[node name="Box" type="CSGBox3D" parent="Node/Player/Pivot"]
-transform = Transform3D(0.971089, 0, 0, 0, 0.971089, 0, 0, 0, 0.971089, 0, 0.971089, 0)
+[node name="CharacterBody3D" parent="." groups=["Player"] instance=ExtResource("2_28q3n")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1, 0)
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.131589, 6.35558, 13.1854)
+transform = Transform3D(1, 0, 0, 0, 0.793353, 0.608761, 0, -0.608761, 0.793353, 0, 8.5515, 12.6413)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.555091, 0.831789, 0, -0.831789, 0.555091, 0, 10.7867, 0)
+transform = Transform3D(-1, 4.73576e-08, 7.34847e-08, 0, -0.840567, 0.541708, 8.74228e-08, 0.541708, 0.840567, 15.2149, 4.24205, 0)
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.81955, 0, -2)
+script = ExtResource("3_e843t")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10318, 2.42975, 0.0524902)
+shape = SubResource("BoxShape3D_ds4yl")
+
+[node name="LabelScore" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Score: 0"
+
+[node name="SphereAnimation" type="CSGSphere3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.70624, 0.702093, -1.69528)
+transparency = 1.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_q1g1n")
+}
+
+[connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]
+[connection signal="body_exited" from="Area3D" to="Area3D" method="_on_body_exited"]
+[connection signal="body_shape_entered" from="Area3D" to="Area3D" method="_on_body_shape_entered"]
